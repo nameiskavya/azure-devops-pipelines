@@ -1,18 +1,21 @@
-# azure-devops-pipelines
+# Azure DevOps Pipelines and Azure Services Documentation
 
 ## Overview
-This repository demonstrates my work with **Azure DevOps**, showcasing a **unified CI/CD pipeline** for automating both the **build**, **test**, and **deployment** of my application to **Azure App Service**.
+This repository showcases my work with **Azure DevOps** and **Azure services**, including:
+- **Unified CI/CD Pipelines**: Automating build, test, and deployment.
+- **Azure Services**: Experience with Kubernetes, App Service, and Cost Management.
+
+## Repository Structure
+- **pipelines/**: Contains pipeline YAML configurations.
+- **scripts/**: Automation scripts for Azure resource management.
+- **documentation/**: Detailed guides and explanations of the pipelines and Azure services used.
 
 ## Key Features
-- **CI/CD in a Single Pipeline**: Both build, test, and deployment processes are automated in a single pipeline.
-- **Automated Testing**: Unit tests are automatically run whenever changes are made.
-- **Azure App Service Deployment**: Automatically deploys to **Azure App Service** upon successful build and test completion.
+- Automated deployment to Azure App Service using pipelines.
+- Integration with Azure Kubernetes Service (AKS).
+- Cost management scripts to analyze Azure spend.
 
 ## How to Use
 1. Clone this repository.
-2. Set up **Azure DevOps** and link it to your own repository.
-3. Follow the instructions in the `pipeline.md` file to replicate the pipeline configuration.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
+2. Review the `pipelines/azure-pipelines.yml` file for the pipeline setup.
+3. Explore the `documentation/` folder for in-depth explanations.

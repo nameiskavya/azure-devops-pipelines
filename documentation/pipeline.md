@@ -1,51 +1,58 @@
-# Unified CI/CD Pipeline Documentation
+# Azure Pipelines Documentation
 
 ## Overview
-This repository demonstrates a **unified CI/CD pipeline** using **Azure DevOps** for both **Continuous Integration (CI)** and **Continuous Deployment (CD)**. 
-The pipeline automates the process of building, testing, and deploying my application to **Azure App Service**. 
-Below is an explanation of the different stages within this unified pipeline.
+This repository contains a unified CI/CD pipeline for automating the build, test, and deployment of a sample application using **Azure DevOps**.
 
-## Pipeline Stages
+### CI/CD Workflow
+The pipeline performs the following steps:
+1. **Continuous Integration (CI):** 
+   - Builds the application.
+   - Runs automated tests.
+   - Publishes the results.
+2. **Continuous Deployment (CD):** 
+   - Deploys the tested application to **Azure App Service**.
 
-### 1. Build and Test (CI)
-In this stage, the pipeline automatically builds the application and runs unit tests to ensure code quality.
+### YAML Configuration
+The entire workflow is defined in the `azure-pipelines.yml` file.
 
-#### Key Steps:
-- **Trigger**: The pipeline is triggered automatically on changes to the `main` branch.
-- **Tasks**:
-  1. **Install Dependencies**: Install the necessary dependencies (e.g., using `npm` for JavaScript projects).
-  2. **Run Tests**: Execute unit tests using a testing framework (e.g., Jest, Mocha).
-  3. **Publish Test Results**: Store test results for reporting purposes.
+#### Key Pipeline Stages:
+1. **Build and Test**:
+   - Installs dependencies.
+   - Runs unit tests and publishes results.
+   - Example:
+	```yaml
+	trigger:
+	- master
 
-#### Example YAML:
-```yaml
-trigger:
-- master
+	pool:
+	  vmImage: ubuntu-latest
 
-pool:
-  vmImage: ubuntu-latest
+	variables:
+	  buildConfiguration: 'Release'
 
-variables:
-  buildConfiguration: 'Release'
+	steps:
+	- script: dotnet build --configuration $(buildConfiguration)
+	  displayName: 'dotnet build $(buildConfiguration)'
+	- task: DotNetCoreCLI@2
+	  displayName: 'Build MyWebSite'
+	  inputs:
+		command: 'build'
+	- task: DotNetCoreCLI@2
+	  displayName: 'Publish MyWebSite'
+	  inputs:
+		command: 'publish'
+		publishWebProjects: true
+	- task: CopyFiles@2
+	  inputs:
+		targetFolder: '$(Build.ArtifactStagingDirectory)' 
+	- task: PublishBuildArtifacts@1
+	  displayName: 'MyWebSiteArtifact'
+	  inputs:
+		ArtifactName: 'MyWebSite'
+		publishLocation: 'Container'
+		PathtoPublish: '$(build.artifactstagingdirectory)'  
+		
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-- task: DotNetCoreCLI@2
-  displayName: 'Build MyWebSite'
-  inputs:
-    command: 'build'
-- task: DotNetCoreCLI@2
-  displayName: 'Publish MyWebSite'
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-- task: CopyFiles@2
-  inputs:
-    targetFolder: '$(Build.ArtifactStagingDirectory)' 
-- task: PublishBuildArtifacts@1
-  displayName: 'MyWebSiteArtifact'
-  inputs:
-    ArtifactName: 'MyWebSite'
-    publishLocation: 'Container'
-    PathtoPublish: '$(build.artifactstagingdirectory)'  
+![Screenshot](screenshots/azure-pipeline.png)
+![Screenshot](screenshots/azure releases.png)
+
